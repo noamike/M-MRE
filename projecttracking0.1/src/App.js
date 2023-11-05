@@ -27,8 +27,8 @@ function App() {
         <body>
         <Center>
           <Stack spacing={3}>
-            <Input placeholder='Contact' width='auto'/>
-            <Input placeholder='Notes' width='auto'/>
+            <Input placeholder='Contact' width='auto' id="contactName"/>
+            <Input placeholder='Notes' width='auto' id="notes"/>
             <Button>Submit</Button>
           </Stack>
           </Center>
