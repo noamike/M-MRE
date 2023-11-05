@@ -71,10 +71,6 @@ function App() {
                   <Td id="contactInput1">{var_contact}</Td>
                   <Td id="notesInput1">{var_notes}</Td>
                 </Tr>
-                <Tr>
-                  <Td></Td>
-                  <Td></Td>
-                </Tr>
               </Tbody>
             </Table>
           </TableContainer>
