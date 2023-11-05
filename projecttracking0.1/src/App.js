@@ -1,9 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider, Input, Center, Stack, Button } from '@chakra-ui/react'
+
+//Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
 
+// Updates the values of the table cells based off of the input data provided
+function submitDetails() {
+  var var_contact = document.getElementById("contactNameValue").value;
+  var var_notes = document.getElementById("notesValue").value;
+
+  return (
+    document.getElementById("contactInput1").innerHTML = var_contact,
+    document.getElementById("notesInput1").innerHTML = var_notes
+  )
+}
+
 function App() {
+  var var_contact;
+  var var_notes;
   return (
     <ChakraProvider>
       <div className="App">
@@ -27,9 +42,9 @@ function App() {
         <body>
         <Center>
           <Stack spacing={3}>
-            <Input placeholder='Contact' width='auto' id="contactName"/>
-            <Input placeholder='Notes' width='auto' id="notes"/>
-            <Button>Submit</Button>
+            <Input placeholder='Contact' width='auto' id="contactNameValue"/>
+            <Input placeholder='Notes' width='auto' id="notesValue"/>
+            <Button onClick={() => submitDetails()}>Submit</Button>
           </Stack>
           </Center>
           <TableContainer>
@@ -42,16 +57,8 @@ function App() {
               </Thead>
               <Tbody>
                 <Tr>
-                  <Td>Contact</Td>
-                  <Td>Notes</Td>
-                </Tr>
-                <Tr>
-                  <Td>Contact</Td>
-                  <Td>Notes</Td>
-                </Tr>
-                <Tr>
-                  <Td>Contact</Td>
-                  <Td>Notes</Td>
+                  <Td id="contactInput1">{var_contact}</Td>
+                  <Td id="notesInput1">{var_notes}</Td>
                 </Tr>
               </Tbody>
             </Table>
@@ -62,5 +69,7 @@ function App() {
     </ChakraProvider>
   );
 }
+
+
 
 export default App;
