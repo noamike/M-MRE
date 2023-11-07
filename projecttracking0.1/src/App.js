@@ -102,7 +102,7 @@ function App() {
                   <Td id="date">{var_today}</Td>
                   <Td id="contactInput1">{var_contact}</Td>
                   <Td id="notesInput1">{var_notes}</Td>
-                  <Td>test</Td>
+                  <Td>test2</Td>
                 </Tr>
               </Tbody>
             </Table>
