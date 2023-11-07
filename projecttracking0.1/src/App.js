@@ -5,7 +5,7 @@ import { ChakraProvider, Input, Textarea, Center, Stack, Button } from '@chakra-
 import {initializeApp} from "firebase/app";
 import {getAnalytics} from "firebase/analytics";
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 
 //Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
@@ -21,7 +21,7 @@ function submitDetails() {
   var yyyy = var_today.getFullYear();
 
   var_today = mm + '/' + dd + '/' + yyyy;
-
+  writeData(var_contact, var_notes, var_today);
   return (
     document.getElementById("contactInput1").innerHTML = var_contact,
     document.getElementById("notesInput1").innerHTML = var_notes,
@@ -29,11 +29,20 @@ function submitDetails() {
   )
 }
 
+function writeData(contactName, notesValue, dateValue) {
+  const db = getDatabase();
+  set(ref(db, '/projects' + contactName, notesValue, dateValue), {
+    contact: contactName,
+    notes: notesValue,
+    date: dateValue
+  });
+}
+
 function App() {
   var var_contact;
   var var_notes;
   var var_today;
-  
+
   // Configuring Firebase API
   const firebaseConfig = {
     apiKey: "AIzaSyCflRjx8kucKdNqurIn6tQSPX1Tv0dTjOM",
@@ -49,7 +58,7 @@ function App() {
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const database = getDatabase(app);
-  
+
   return (
     <ChakraProvider>
       <div className="App">
@@ -75,7 +84,7 @@ function App() {
           <Stack spacing={3}>
             <Input placeholder='Contact' width='auto' id="contactNameValue"/>
             <Textarea placeholder='Notes' width='auto' id="notesValue"/>
-            <Button onClick={() => submitDetails()}>Submit</Button>
+            <Button onClick={() => writeData()}>Submit</Button>
           </Stack>
           </Center>
           <TableContainer>
@@ -96,7 +105,7 @@ function App() {
               </Tbody>
             </Table>
           </TableContainer>
- 
+
 
         </body>
       </div>
