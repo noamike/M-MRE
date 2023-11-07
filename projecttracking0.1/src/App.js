@@ -1,6 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import { ChakraProvider, Input, Textarea, Center, Stack, Button } from '@chakra-ui/react'
+//Importing Firebase (Database) SDK (Software Development Kits)
+import {initializeApp} from "firebase/app";
+import {getAnalytics} from "firebase/analytics";
+// https://firebase.google.com/docs/web/setup#available-libraries
+import { getDatabase } from "firebase/database";
 
 //Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
@@ -28,6 +33,23 @@ function App() {
   var var_contact;
   var var_notes;
   var var_today;
+  
+  // Configuring Firebase API
+  const firebaseConfig = {
+    apiKey: "AIzaSyCflRjx8kucKdNqurIn6tQSPX1Tv0dTjOM",
+    authDomain: "mmre-a8466.firebaseapp.com",
+    projectId: "mmre-a8466",
+    storageBucket: "mmre-a8466.appspot.com",
+    messagingSenderId: "1021596921495",
+    appId: "1:1021596921495:web:77069ccb981b6d6aee03d2",
+    measurementId: "G-1V9E3C7J55"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const database = getDatabase(app);
+  
   return (
     <ChakraProvider>
       <div className="App">
@@ -74,6 +96,7 @@ function App() {
               </Tbody>
             </Table>
           </TableContainer>
+ 
 
         </body>
       </div>
