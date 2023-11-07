@@ -94,6 +94,7 @@ function App() {
                   <Th>Date</Th>
                   <Th>Contact</Th>
                   <Th>Notes</Th>
+                  <Th>Test Column</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -101,6 +102,7 @@ function App() {
                   <Td id="date">{var_today}</Td>
                   <Td id="contactInput1">{var_contact}</Td>
                   <Td id="notesInput1">{var_notes}</Td>
+                  <Td>test</Td>
                 </Tr>
               </Tbody>
             </Table>
