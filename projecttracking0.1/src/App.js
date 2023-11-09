@@ -1,5 +1,5 @@
 import './App.css';
-import {db} from '../firebase';
+import {db} from './firebase';
 import { ChakraProvider, Input, Textarea, Center, Stack, Button } from '@chakra-ui/react'
 //Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
