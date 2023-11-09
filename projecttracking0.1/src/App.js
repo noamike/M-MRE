@@ -1,11 +1,14 @@
 import './App.css';
-import {db} from '../firebase';
+import {db} from './firebase';
+import {collection, addDoc, setDoc, getDocs, doc} from "firebase/firestore";
 import { ChakraProvider, Input, Textarea, Center, Stack, Button } from '@chakra-ui/react'
 //Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
+import { useState } from 'react';
 
 // Updates the values of the table cells based off of the input data provided
-function submitDetails() {
+ function submitDetails() {
+
   var var_contact = document.getElementById("contactNameValue").value;
   var var_notes = document.getElementById("notesValue").value;
 
@@ -15,7 +18,19 @@ function submitDetails() {
   var yyyy = var_today.getFullYear();
 
   var_today = mm + '/' + dd + '/' + yyyy;
-  writeData(var_contact, var_notes, var_today);
+
+  {/*const docRef = addDoc(collection(db, "var_contact"), {
+    var_notes: var_notes,
+
+  });*/}
+
+  // Add a new document in collection "Project 1" with "var_contact" as id
+  const docRef = setDoc(doc(db, "Project 1", var_contact), {
+    date: var_today,
+    notes: var_notes,
+
+  });
+
   return (
     document.getElementById("contactInput1").innerHTML = var_contact,
     document.getElementById("notesInput1").innerHTML = var_notes,
@@ -23,14 +38,8 @@ function submitDetails() {
   )
 }
 
-function writeData(contactName, notesValue, dateValue) {
-  const db = getDatabase();
-  set(ref(db, '/projects' + contactName, notesValue, dateValue), {
-    contact: contactName,
-    notes: notesValue,
-    date: dateValue
-  });
-}
+
+
 
 function App() {
   var var_contact;
@@ -61,8 +70,10 @@ function App() {
         <Center>
           <Stack spacing={3}>
             <Input placeholder='Contact' width='auto' id="contactNameValue"/>
+            <Input placeholder='Email' width='auto' id="contactNameValue"/>
+            <Input placeholder='Phone' width='auto' id="contactNameValue"/>            
             <Textarea placeholder='Notes' width='auto' id="notesValue"/>
-            <Button onClick={() => writeData()}>Submit</Button>
+            <Button onClick={() => submitDetails()}>Submit</Button>
           </Stack>
           </Center>
           <TableContainer>
@@ -72,7 +83,6 @@ function App() {
                   <Th>Date</Th>
                   <Th>Contact</Th>
                   <Th>Notes</Th>
-                  <Th>Test Column</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -80,7 +90,6 @@ function App() {
                   <Td id="date">{var_today}</Td>
                   <Td id="contactInput1">{var_contact}</Td>
                   <Td id="notesInput1">{var_notes}</Td>
-                  <Td>test</Td>
                 </Tr>
               </Tbody>
             </Table>
