@@ -41,12 +41,25 @@ import { useState } from 'react';
   )
 }
 
+//Adds a document to the collection Projects
+function createProject(){
+  var new_project = document.getElementById("newProject").value;
+  var clear = "";
+  const docRef = setDoc(doc(db,"Projects",new_project),{
+    name: new_project, 
+  });
+  document.getElementById('newProject').value = '';
+
+}
 
  function App() {
   var var_notes;
   var var_contact;
   var var_today;
-  /*allows for easy updating of values, notes = variable,  
+  var new_doc;
+
+  const collections = query()
+  /*allows for easy updating of value, notes = variable,  
   * setNotes is function to update notes variable
   * useState("") is base value of the notes variable 
   */
@@ -71,24 +84,21 @@ import { useState } from 'react';
   return (
     <ChakraProvider>
       <div className="App">
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>*/}
         <header>
           Updates for Project 1
         </header>
         <body>
+        {/* Creating new Documents within the project collection */}
+        <Center>
+          <Stack spacing={3}>
+            <Input placeholder='Create Project' width='auto' id='newProject'/>
+            <Button onClick={() => createProject()}>Create Project</Button>
+          </Stack>
+        </Center>
+        {/* Selecting which Project */}
+
+
+        {/* Showing updates for Project */}
         <Center>
           <Stack spacing={3}>
             <Input placeholder='Contact' width='auto' id="contactNameValue"/>
@@ -97,27 +107,25 @@ import { useState } from 'react';
             <Textarea placeholder='Notes' width='auto' id="notesValue"/>
             <Button onClick={() => submitDetails()}>Submit</Button>
           </Stack>
-          </Center>
-          <TableContainer>
-            <Table variant='striped' colorScheme='gray'>
-              <Thead>
-                <Tr>
-                  <Th>Date</Th>
-                  <Th>Contact</Th>
-                  <Th>Notes</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr>
-                  <Td id="date">{var_today}</Td>
-                  <Td id="contactInput1">{var_contact}</Td>
-                  <Td id="notesInput1">{notes}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </TableContainer>
-
-
+        </Center>
+        <TableContainer>
+          <Table variant='striped' colorScheme='gray'>
+            <Thead>
+              <Tr>
+                <Th>Date</Th>
+                <Th>Contact</Th>
+                <Th>Notes</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td id="date">{var_today}</Td>
+                <Td id="contactInput1">{var_contact}</Td>
+                <Td id="notesInput1">{notes}</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
         </body>
       </div>
     </ChakraProvider>
