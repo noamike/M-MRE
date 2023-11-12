@@ -1,10 +1,12 @@
 import './App.css';
 import {db} from './firebase';
-import {collection, addDoc, setDoc, getDocs, doc} from "firebase/firestore";
+import {collection, addDoc, setDoc, getDocs, doc, getDoc, query, where} from "firebase/firestore";
 import { ChakraProvider, Input, Textarea, Center, Stack, Button } from '@chakra-ui/react'
+import {getDatabase, ref, child, get} from 'firebase/database';
 //Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
 import { useState } from 'react';
+
 
 // Updates the values of the table cells based off of the input data provided
  function submitDetails() {
@@ -26,6 +28,7 @@ import { useState } from 'react';
 
   // Add a new document in collection "Project 1" with "var_contact" as id
   const docRef = setDoc(doc(db, "Project 1", var_contact), {
+    name: var_contact,
     date: var_today,
     notes: var_notes,
 
@@ -33,19 +36,38 @@ import { useState } from 'react';
 
   return (
     document.getElementById("contactInput1").innerHTML = var_contact,
-    document.getElementById("notesInput1").innerHTML = var_notes,
+    //document.getElementById("notesInput1").innerHTML = var_notes,
     document.getElementById("date").innerHTML = var_today
   )
 }
 
 
-
-
-function App() {
-  var var_contact;
+ function App() {
   var var_notes;
+  var var_contact;
   var var_today;
+  /*allows for easy updating of values, notes = variable,  
+  * setNotes is function to update notes variable
+  * useState("") is base value of the notes variable 
+  */
+  const[notes,setNotes] = useState("");
 
+  async function getDetails(){
+    //Queries a collection for all documents where a name ID is Lee Michaels
+    const q = query(collection(db,"Project 1"), 
+                where("name","==","Lee Michaels"));
+    //Places the found docs within a variable for easy access
+    const getNotes = await getDocs(q);
+    //finds the first document with name ID Lee Michaels
+    const data = getNotes.docs[0].data();
+  
+    //sets the variable notes to data.notes
+    setNotes(data.notes);
+
+    return;
+  };
+  
+  getDetails();
   return (
     <ChakraProvider>
       <div className="App">
@@ -70,8 +92,8 @@ function App() {
         <Center>
           <Stack spacing={3}>
             <Input placeholder='Contact' width='auto' id="contactNameValue"/>
-            <Input placeholder='Email' width='auto' id="contactNameValue"/>
-            <Input placeholder='Phone' width='auto' id="contactNameValue"/>            
+            <Input placeholder='Email' width='auto' id="contactEmailValue"/>
+            <Input placeholder='Phone' width='auto' id="contactPhonealue"/>            
             <Textarea placeholder='Notes' width='auto' id="notesValue"/>
             <Button onClick={() => submitDetails()}>Submit</Button>
           </Stack>
@@ -89,7 +111,7 @@ function App() {
                 <Tr>
                   <Td id="date">{var_today}</Td>
                   <Td id="contactInput1">{var_contact}</Td>
-                  <Td id="notesInput1">{var_notes}</Td>
+                  <Td id="notesInput1">{notes}</Td>
                 </Tr>
               </Tbody>
             </Table>
@@ -101,7 +123,5 @@ function App() {
     </ChakraProvider>
   );
 }
-
-
 
 export default App;
