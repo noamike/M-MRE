@@ -1,7 +1,8 @@
 import './App.css';
 import {db} from './firebase';
 import {collection, addDoc, setDoc, getDocs, doc, getDoc, query, where} from "firebase/firestore";
-import { ChakraProvider, Input, Textarea, Center, Stack, Button } from '@chakra-ui/react'
+import { ChakraProvider, Input, Textarea, Center, Stack, Button, Select} from '@chakra-ui/react'
+//import {Select} from 'chakra-react-select';
 import {getDatabase, ref, child, get} from 'firebase/database';
 //Elements for the table for data display
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react'
@@ -49,14 +50,31 @@ function createProject(){
     name: new_project, 
   });
   document.getElementById('newProject').value = '';
+  
 
 }
+
+function placeOptions(select_options){
+  let select = document.getElementById('projPicker');
+
+
+  for(var i=0;i<select_options.length;i++){
+    let optn = select_options[i];
+    let el = document.createElement("option");
+    el.textContent = optn;
+    el.value = optn;
+    select.appendChild(el);
+  }
+};
+
 
  function App() {
   var var_notes;
   var var_contact;
   var var_today;
   var new_doc;
+  var select_options;
+
 
   const collections = query()
   /*allows for easy updating of value, notes = variable,  
@@ -64,6 +82,8 @@ function createProject(){
   * useState("") is base value of the notes variable 
   */
   const[notes,setNotes] = useState("");
+  const[proj,setProj] = useState([{id:'Projects:',name:'Projects:'}]);
+  var select_options = [];
 
   async function getDetails(){
     //Queries a collection for all documents where a name ID is Lee Michaels
@@ -73,14 +93,45 @@ function createProject(){
     const getNotes = await getDocs(q);
     //finds the first document with name ID Lee Michaels
     const data = getNotes.docs[0].data();
-  
     //sets the variable notes to data.notes
     setNotes(data.notes);
-
+    
     return;
   };
+
   
+ async function getProjects(){
+    //Queries the Projects Collection to get a snapshot of all Projects
+    const projectRef = query(collection(db,"Projects"));
+    //Places all documents within an easy accessible array 
+    const allProj = await getDocs(projectRef);
+
+    for(var i=0;i<allProj.size;i++){
+      console.log(allProj.docs[i].id)
+      select_options[i] = allProj.docs[i].id;
+      console.log(select_options);
+      
+      {/* 
+      const updateProj = [
+        ...proj,
+      {
+        id: allProj.docs[i].id,
+        name: allProj.docs[i].id,
+      }];
+      setProj(updateProj);
+      console.log("The project array is as follows: ", proj);
+      */}
+    }
+
+
+    return;
+
+  };  
+  
+
   getDetails();
+  getProjects();
+
   return (
     <ChakraProvider>
       <div className="App">
@@ -96,9 +147,16 @@ function createProject(){
           </Stack>
         </Center>
         {/* Selecting which Project */}
+        <Center>
+          <Stack spacing={3}>
+            <Select placeholder="Select a Project" id='projPicker'onClick={() => placeOptions(select_options)}>
 
+            </Select>
+          </Stack>
+        </Center>
 
-        {/* Showing updates for Project */}
+        {/* Showing updates for Project you want to update*/}
+        {/*Calls the getDetails function farther down in the project, after it is selected */}
         <Center>
           <Stack spacing={3}>
             <Input placeholder='Contact' width='auto' id="contactNameValue"/>
