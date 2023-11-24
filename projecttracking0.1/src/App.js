@@ -55,16 +55,25 @@ function createProject(){
 }
 
 function placeOptions(select_options){
+  
+  //creates a variable to be able to add the options to the dropdown
   let select = document.getElementById('projPicker');
 
+  select.innerHTML="";
 
+  //iterates through the project Array
   for(var i=0;i<select_options.length;i++){
+    //sets a variable for the option name we want
     let optn = select_options[i];
+    //creates an "Element" variable to add in the project 
     let el = document.createElement("option");
+    //Sets text and value of the element to the data
     el.textContent = optn;
     el.value = optn;
+    //adds the element to the select dropdownß
     select.appendChild(el);
   }
+  console.log(select.children);
 };
 
 
@@ -100,7 +109,7 @@ function placeOptions(select_options){
   };
 
   
- async function getProjects(){
+ async function getProjects(select_options){
     //Queries the Projects Collection to get a snapshot of all Projects
     const projectRef = query(collection(db,"Projects"));
     //Places all documents within an easy accessible array 
@@ -121,6 +130,7 @@ function placeOptions(select_options){
       setProj(updateProj);
       console.log("The project array is as follows: ", proj);
       */}
+      placeOptions(select_options);
     }
 
 
@@ -130,7 +140,6 @@ function placeOptions(select_options){
   
 
   getDetails();
-  getProjects();
 
   return (
     <ChakraProvider>
@@ -149,7 +158,8 @@ function placeOptions(select_options){
         {/* Selecting which Project */}
         <Center>
           <Stack spacing={3}>
-            <Select placeholder="Select a Project" id='projPicker'onClick={() => placeOptions(select_options)}>
+            {/* Creates the Project dropdown that, when clicked, populates the projects  */}
+            <Select placeholder="Select a Project" id='projPicker'onClick={() =>  getProjects(select_options)}>
 
             </Select>
           </Stack>
