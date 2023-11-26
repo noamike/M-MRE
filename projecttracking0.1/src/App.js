@@ -58,9 +58,13 @@ function placeOptions(select_options){
   
   //creates a variable to be able to add the options to the dropdown
   let select = document.getElementById('projPicker');
+  let default_opt = document.createElement("option");
+
+  default_opt.textContent="Select a Project";
+  default_opt.value="Select";
 
   select.innerHTML="";
-
+  select.appendChild(default_opt);
   //iterates through the project Array
   for(var i=0;i<select_options.length;i++){
     //sets a variable for the option name we want
@@ -91,7 +95,7 @@ function placeOptions(select_options){
   * useState("") is base value of the notes variable 
   */
   const[notes,setNotes] = useState("");
-  const[proj,setProj] = useState([{id:'Projects:',name:'Projects:'}]);
+  const[proj,setProj] = useState("");
   var select_options = [];
 
   async function getDetails(){
@@ -140,6 +144,7 @@ function placeOptions(select_options){
   
 
   getDetails();
+  getProjects(select_options);
 
   return (
     <ChakraProvider>
@@ -159,8 +164,7 @@ function placeOptions(select_options){
         <Center>
           <Stack spacing={3}>
             {/* Creates the Project dropdown that, when clicked, populates the projects  */}
-            <Select placeholder="Select a Project" id='projPicker'onClick={() =>  getProjects(select_options)}>
-
+            <Select selected="Select a Project" id='projPicker'>
             </Select>
           </Stack>
         </Center>
